@@ -760,4 +760,23 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get homeButtonActionLaunchArc => 'Launch Arc';
+
+  @override
+  String get showWeather => 'Show weather';
+
+  @override
+  String get weatherLocation => 'Weather location';
+
+  @override
+  String get weatherCityName => 'City name';
+
+  @override
+  String get weatherSearch => 'Search';
+
+  @override
+  String get weatherNoResults => 'No cities found';
+
+  @override
+  String get weatherSearchFailed =>
+      'Search failed. Check the network connection.';
 }

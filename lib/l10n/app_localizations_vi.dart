@@ -783,4 +783,23 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get homeButtonActionLaunchArc => 'Launch Arc';
+
+  @override
+  String get showWeather => 'Hiển thị thời tiết';
+
+  @override
+  String get weatherLocation => 'Vị trí thời tiết';
+
+  @override
+  String get weatherCityName => 'Tên thành phố';
+
+  @override
+  String get weatherSearch => 'Tìm kiếm';
+
+  @override
+  String get weatherNoResults => 'Không tìm thấy thành phố';
+
+  @override
+  String get weatherSearchFailed =>
+      'Tìm kiếm thất bại. Hãy kiểm tra kết nối mạng.';
 }
