@@ -42,6 +42,8 @@ const _wifiUsagePeriod = "wifi_usage_period";
 const _showWifiWidgetInStatusBar = "show_wifi_widget_in_status_bar";
 const String _showNetworkIndicatorInStatusBar = "show_network_indicator_in_status_bar";
 const String _showWeatherInStatusBar = "show_weather_in_status_bar";
+const String _showWeatherLocationInStatusBar = "show_weather_location_in_status_bar";
+const String _weatherImperialUnits = "weather_imperial_units";
 const String _weatherCity = "weather_city";
 const String _weatherLatitude = "weather_latitude";
 const String _weatherLongitude = "weather_longitude";
@@ -139,6 +141,10 @@ class SettingsService extends ChangeNotifier {
   bool get showNetworkIndicatorInStatusBar => _sharedPreferences.getBool(_showNetworkIndicatorInStatusBar) ?? true;
 
   bool get showWeatherInStatusBar => _sharedPreferences.getBool(_showWeatherInStatusBar) ?? false;
+
+  bool get showWeatherLocationInStatusBar => _sharedPreferences.getBool(_showWeatherLocationInStatusBar) ?? true;
+
+  bool get weatherImperialUnits => _sharedPreferences.getBool(_weatherImperialUnits) ?? false;
 
   /// Null until the user picks a city; the weather widget stays hidden and offline until then.
   String? get weatherCity => _sharedPreferences.getString(_weatherCity);
@@ -268,6 +274,14 @@ class SettingsService extends ChangeNotifier {
 
   Future<void> setShowWeatherInStatusBar(bool show) async {
     return set(_showWeatherInStatusBar, show);
+  }
+
+  Future<void> setShowWeatherLocationInStatusBar(bool show) async {
+    return set(_showWeatherLocationInStatusBar, show);
+  }
+
+  Future<void> setWeatherImperialUnits(bool imperial) async {
+    return set(_weatherImperialUnits, imperial);
   }
 
   Future<void> setWeatherLocation(String city, double latitude, double longitude) async {

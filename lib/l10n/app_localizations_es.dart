@@ -787,10 +787,25 @@ class AppLocalizationsEs extends AppLocalizations {
   String get homeButtonActionLaunchArc => 'Launch Arc';
 
   @override
+  String get weather => 'Weather';
+
+  @override
   String get showWeather => 'Mostrar el tiempo';
 
   @override
   String get weatherLocation => 'Ubicación del tiempo';
+
+  @override
+  String get showWeatherLocation => 'Show location';
+
+  @override
+  String get weatherUnits => 'Localization';
+
+  @override
+  String get weatherUnitsImperial => 'Imperial';
+
+  @override
+  String get weatherUnitsMetric => 'Metric';
 
   @override
   String get weatherCityName => 'Nombre de la ciudad';

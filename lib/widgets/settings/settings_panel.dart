@@ -99,6 +99,10 @@ class _SettingsPanelState extends State<SettingsPanel> {
                       return _FastPageRoute(builder: (_) => WallpaperPanelPage());
                     case StatusBarPanelPage.routeName:
                       return _FastPageRoute(builder: (_) => StatusBarPanelPage());
+                    case WeatherSettingsPage.routeName:
+                      return _FastPageRoute(builder: (_) => const WeatherSettingsPage());
+                    case WeatherUnitsPage.routeName:
+                      return _FastPageRoute(builder: (_) => const WeatherUnitsPage());
                     case GradientPanelPage.routeName:
                       return _FastPageRoute(builder: (_) => GradientPanelPage());
                     case SlideshowSourcesPanelPage.routeName:

@@ -1601,6 +1601,7 @@ class MockAppsService extends _i1.Mock implements _i16.AppsService {
 /// See the documentation for Mockito's code generation for more information.
 class MockSettingsService extends _i1.Mock implements _i18.SettingsService {
   @override
+<<<<<<< HEAD
   bool get isFireTv => (super.noSuchMethod(
         Invocation.getter(#isFireTv),
         returnValue: false,
@@ -1610,14 +1611,39 @@ class MockSettingsService extends _i1.Mock implements _i18.SettingsService {
   @override
   bool get fireTvHomeRemapEnabled => (super.noSuchMethod(
         Invocation.getter(#fireTvHomeRemapEnabled),
+=======
+  bool get showWeatherLocationInStatusBar => (super.noSuchMethod(
+        Invocation.getter(#showWeatherLocationInStatusBar),
+>>>>>>> 29b8859 (feat(weather): move settings to Weather submenu, add location toggle and Imperial/Metric units)
         returnValue: true,
         returnValueForMissingStub: true,
       ) as bool);
 
   @override
+<<<<<<< HEAD
   _i9.Future<void> setFireTvHomeRemapEnabled(bool? value) =>
       (super.noSuchMethod(
         Invocation.method(#setFireTvHomeRemapEnabled, [value]),
+=======
+  bool get weatherImperialUnits => (super.noSuchMethod(
+        Invocation.getter(#weatherImperialUnits),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
+  _i9.Future<void> setShowWeatherLocationInStatusBar(bool? show) =>
+      (super.noSuchMethod(
+        Invocation.method(#setShowWeatherLocationInStatusBar, [show]),
+        returnValue: _i9.Future<void>.value(),
+        returnValueForMissingStub: _i9.Future<void>.value(),
+      ) as _i9.Future<void>);
+
+  @override
+  _i9.Future<void> setWeatherImperialUnits(bool? imperial) =>
+      (super.noSuchMethod(
+        Invocation.method(#setWeatherImperialUnits, [imperial]),
+>>>>>>> 29b8859 (feat(weather): move settings to Weather submenu, add location toggle and Imperial/Metric units)
         returnValue: _i9.Future<void>.value(),
         returnValueForMissingStub: _i9.Future<void>.value(),
       ) as _i9.Future<void>);
