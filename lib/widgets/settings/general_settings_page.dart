@@ -71,9 +71,9 @@ class GeneralSettingsPage extends StatelessWidget {
                 ),
                 FocusableSettingsTile(
                   showChevron: true,
-                  leading: const Icon(Icons.arrow_back),
-                  title: Text(localizations.backButtonAction, style: Theme.of(context).textTheme.bodyMedium),
-                  onPressed: () => Navigator.of(context).pushNamed(BackButtonActionPage.routeName),
+                  leading: const Icon(Icons.settings_remote_outlined),
+                  title: Text(localizations.buttonActions, style: Theme.of(context).textTheme.bodyMedium),
+                  onPressed: () => Navigator.of(context).pushNamed(ButtonActionsPage.routeName),
                 ),
                 FocusableSettingsTile(
                   showChevron: true,

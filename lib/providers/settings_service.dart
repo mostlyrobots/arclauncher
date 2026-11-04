@@ -22,6 +22,7 @@ import 'package:flauncher/providers/reddit_slideshow.dart';
 import 'package:flauncher/providers/unsplash_slideshow.dart';
 import 'package:flauncher/widgets/settings/back_button_actions.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -55,6 +56,7 @@ const String _dockDarkBackground = "dock_dark_background";
 const String _dockShadowEnabled = "dock_shadow_enabled";
 const String _showFocusBorders = "show_focus_borders";
 const String _focusBorderThickness = "focus_border_thickness";
+const String _fireTvHomeRemapEnabledKey = "fire_tv_home_remap_enabled";
 
 // Focus border thickness options (in dp)
 const double FOCUS_BORDER_THIN = 1.0;
@@ -92,9 +94,14 @@ const String ACCENT_COLOR_ROSE = "FF4081";
 const String ACCENT_COLOR_ICE_BLUE = "80D8FF";
 
 class SettingsService extends ChangeNotifier {
+  static const _platform = MethodChannel('me.efesser.flauncher/method');
   static final defaultDateFormat = "EEEE d";
   static final defaultTimeFormat = "H:mm";
   final SharedPreferences _sharedPreferences;
+  bool _isFireTv = false;
+
+  bool get isFireTv => _isFireTv;
+  bool get fireTvHomeRemapEnabled => _sharedPreferences.getBool(_fireTvHomeRemapEnabledKey) ?? true;
 
   bool get appHighlightAnimationEnabled =>
       showFocusBorders && (_sharedPreferences.getBool(_appHighlightAnimationEnabledKey) ?? false);
@@ -162,7 +169,18 @@ class SettingsService extends ChangeNotifier {
     return Color(int.parse("0xFF$hex"));
   }
 
-  SettingsService(this._sharedPreferences);
+  SettingsService(this._sharedPreferences) {
+    _initFireTv();
+  }
+
+  Future<void> _initFireTv() async {
+    try {
+      _isFireTv = await _platform.invokeMethod<bool>('isFireTv') ?? false;
+      if (_isFireTv) notifyListeners();
+    } catch (_) {}
+  }
+
+  Future<void> setFireTvHomeRemapEnabled(bool value) => set(_fireTvHomeRemapEnabledKey, value);
 
   Future<void> set(String key, bool value) async {
     await _sharedPreferences.setBool(key, value);

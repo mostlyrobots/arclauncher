@@ -326,6 +326,10 @@
     "brightnessSlotAfternoon": "3 PM - 6 PM",
     "brightnessSlotEvening": "6 PM - 10 PM",
     "brightnessSlotNight": "10 PM - 6 AM",
+    "buttonActions": "Button actions",
+    "homeButtonAction": "Home button action",
+    "homeButtonActionDefault": "Default",
+    "homeButtonActionLaunchArc": "Launch Arc",
     "@customBannerSetFailed": {
       "placeholders": {
         "error": {

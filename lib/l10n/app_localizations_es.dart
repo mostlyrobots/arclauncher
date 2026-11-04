@@ -773,4 +773,16 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get brightnessSlotNight => '10 PM - 6 AM';
+
+  @override
+  String get buttonActions => 'Button actions';
+
+  @override
+  String get homeButtonAction => 'Home button action';
+
+  @override
+  String get homeButtonActionDefault => 'Default';
+
+  @override
+  String get homeButtonActionLaunchArc => 'Launch Arc';
 }

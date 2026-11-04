@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="fire_tv_a11y_desc">Redirects the Fire TV Home button to Arc Launcher.</string>
+</resources>

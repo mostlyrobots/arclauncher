@@ -1601,6 +1601,28 @@ class MockAppsService extends _i1.Mock implements _i16.AppsService {
 /// See the documentation for Mockito's code generation for more information.
 class MockSettingsService extends _i1.Mock implements _i18.SettingsService {
   @override
+  bool get isFireTv => (super.noSuchMethod(
+        Invocation.getter(#isFireTv),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
+  bool get fireTvHomeRemapEnabled => (super.noSuchMethod(
+        Invocation.getter(#fireTvHomeRemapEnabled),
+        returnValue: true,
+        returnValueForMissingStub: true,
+      ) as bool);
+
+  @override
+  _i9.Future<void> setFireTvHomeRemapEnabled(bool? value) =>
+      (super.noSuchMethod(
+        Invocation.method(#setFireTvHomeRemapEnabled, [value]),
+        returnValue: _i9.Future<void>.value(),
+        returnValueForMissingStub: _i9.Future<void>.value(),
+      ) as _i9.Future<void>);
+
+  @override
   bool get appHighlightAnimationEnabled => (super.noSuchMethod(
         Invocation.getter(#appHighlightAnimationEnabled),
         returnValue: false,

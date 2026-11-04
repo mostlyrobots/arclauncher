@@ -119,8 +119,12 @@ class _SettingsPanelState extends State<SettingsPanel> {
                       );
                     case WifiUsagePeriodPage.routeName:
                       return _FastPageRoute(builder: (_) => WifiUsagePeriodPage());
+                    case ButtonActionsPage.routeName:
+                      return _FastPageRoute(builder: (_) => const ButtonActionsPage());
                     case BackButtonActionPage.routeName:
                       return _FastPageRoute(builder: (_) => BackButtonActionPage());
+                    case HomeButtonActionPage.routeName:
+                      return _FastPageRoute(builder: (_) => const HomeButtonActionPage());
                     case DateTimeFormatPage.routeName:
                       return _FastPageRoute(builder: (_) => DateTimeFormatPage());
                     case AppearancePanelPage.routeName:
