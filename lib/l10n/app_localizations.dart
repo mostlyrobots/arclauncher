@@ -1513,6 +1513,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'10 PM - 6 AM'**
   String get brightnessSlotNight;
+
+  /// No description provided for @buttonActions.
+  ///
+  /// In en, this message translates to:
+  /// **'Button actions'**
+  String get buttonActions;
+
+  /// No description provided for @homeButtonAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Home button action'**
+  String get homeButtonAction;
+
+  /// No description provided for @homeButtonActionDefault.
+  ///
+  /// In en, this message translates to:
+  /// **'Default'**
+  String get homeButtonActionDefault;
+
+  /// No description provided for @homeButtonActionLaunchArc.
+  ///
+  /// In en, this message translates to:
+  /// **'Launch Arc'**
+  String get homeButtonActionLaunchArc;
 }
 
 class _AppLocalizationsDelegate

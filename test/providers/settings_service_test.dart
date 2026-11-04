@@ -195,4 +195,12 @@ void main() async {
       expect(sharedPreferences.getBool("watch_next_hide_programs_without_images"), isFalse);
     });
   });
+
+  group("fireTvHomeRemapEnabled", () {
+    test("defaults to true and persists changes", () async {
+      expect(settingsService.fireTvHomeRemapEnabled, isTrue);
+      await settingsService.setFireTvHomeRemapEnabled(false);
+      expect(settingsService.fireTvHomeRemapEnabled, isFalse);
+    });
+  });
 }

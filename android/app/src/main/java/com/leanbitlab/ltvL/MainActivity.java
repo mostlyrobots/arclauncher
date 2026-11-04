@@ -81,8 +81,15 @@ public class MainActivity extends FlutterActivity {
     private static final String COLUMN_ASPECT_RATIO = "aspect_ratio";
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        FireTvHomeService.sync(this);
+    }
+
+    @Override
     public void configureFlutterEngine(@NonNull FlutterEngine flutterEngine) {
         super.configureFlutterEngine(flutterEngine);
+        FireTvHomeService.sync(this);
 
         BinaryMessenger messenger = flutterEngine.getDartExecutor().getBinaryMessenger();
 
@@ -189,6 +196,7 @@ public class MainActivity extends FlutterActivity {
                         result.success(new byte[0]);
                     }
                 }
+                case "isFireTv" -> result.success(FireTvHomeService.isFireTv(this));
                 default -> throw new IllegalArgumentException("Unknown method: " + call.method);
             }
         });
