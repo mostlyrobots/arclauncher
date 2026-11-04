@@ -29,7 +29,7 @@ void main() {
 
   Future<WeatherReading> fakeFetch(double latitude, double longitude) async {
     fetchCount++;
-    return const WeatherReading(7, 0);
+    return const WeatherReading(20, 0);
   }
 
   setUp(() async {
@@ -45,6 +45,8 @@ void main() {
 
   test('weather is off and has no city by default', () {
     expect(settings.showWeatherInStatusBar, isFalse);
+    expect(settings.showWeatherLocationInStatusBar, isTrue);
+    expect(settings.weatherImperialUnits, isFalse);
     expect(settings.weatherCity, isNull);
     expect(settings.weatherLatitude, isNull);
   });
@@ -58,7 +60,7 @@ void main() {
     expect(find.byType(Text), findsNothing);
   });
 
-  testWidgets('with a chosen city the temperature is fetched and shown', (tester) async {
+  testWidgets('with a chosen city the temperature is fetched and respects location/units toggles', (tester) async {
     await settings.setShowWeatherInStatusBar(true);
     await settings.setWeatherLocation('Oslo', 59.91, 10.75);
     await tester.pumpWidget(host());
@@ -66,7 +68,15 @@ void main() {
     await tester.pump();
 
     expect(fetchCount, 1);
-    expect(find.text('Oslo 7°'), findsOneWidget);
+    expect(find.text('Oslo 20°'), findsOneWidget);
+
+    await settings.setWeatherImperialUnits(true);
+    await tester.pump();
+    expect(find.text('Oslo 68°'), findsOneWidget);
+
+    await settings.setShowWeatherLocationInStatusBar(false);
+    await tester.pump();
+    expect(find.text('68°'), findsOneWidget);
   });
 
   testWidgets('a failed request hides the widget', (tester) async {

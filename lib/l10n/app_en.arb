@@ -354,8 +354,13 @@
         }
       }
     },
+    "weather": "Weather",
     "showWeather": "Show weather",
     "weatherLocation": "Weather location",
+    "showWeatherLocation": "Show location",
+    "weatherUnits": "Localization",
+    "weatherUnitsImperial": "Imperial",
+    "weatherUnitsMetric": "Metric",
     "weatherCityName": "City name",
     "weatherSearch": "Search",
     "weatherNoResults": "No cities found",

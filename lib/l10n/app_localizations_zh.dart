@@ -748,4 +748,38 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get brightnessSlotNight => '夜间 10 点 - 早上 6 点';
+
+  @override
+  String get weather => 'Weather';
+
+  @override
+  String get showWeather => 'Show weather';
+
+  @override
+  String get weatherLocation => 'Weather location';
+
+  @override
+  String get showWeatherLocation => 'Show location';
+
+  @override
+  String get weatherUnits => 'Localization';
+
+  @override
+  String get weatherUnitsImperial => 'Imperial';
+
+  @override
+  String get weatherUnitsMetric => 'Metric';
+
+  @override
+  String get weatherCityName => 'City name';
+
+  @override
+  String get weatherSearch => 'Search';
+
+  @override
+  String get weatherNoResults => 'No cities found';
+
+  @override
+  String get weatherSearchFailed =>
+      'Search failed. Check the network connection.';
 }

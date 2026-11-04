@@ -769,10 +769,25 @@ class AppLocalizationsTr extends AppLocalizations {
   String get brightnessSlotNight => '10 PM - 6 AM';
 
   @override
+  String get weather => 'Weather';
+
+  @override
   String get showWeather => 'Hava durumunu göster';
 
   @override
   String get weatherLocation => 'Hava durumu konumu';
+
+  @override
+  String get showWeatherLocation => 'Show location';
+
+  @override
+  String get weatherUnits => 'Localization';
+
+  @override
+  String get weatherUnitsImperial => 'Imperial';
+
+  @override
+  String get weatherUnitsMetric => 'Metric';
 
   @override
   String get weatherCityName => 'Şehir adı';

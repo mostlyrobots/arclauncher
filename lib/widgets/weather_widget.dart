@@ -131,10 +131,14 @@ class _WeatherWidgetState extends State<WeatherWidget> with WidgetsBindingObserv
   @override
   Widget build(BuildContext context) {
     final city = context.select<SettingsService, String?>((s) => s.weatherCity);
+    final showLocation = context.select<SettingsService, bool>((s) => s.showWeatherLocationInStatusBar);
+    final imperial = context.select<SettingsService, bool>((s) => s.weatherImperialUnits);
     final key = context.select<SettingsService, String>((s) => '${s.weatherLatitude},${s.weatherLongitude}');
     if (key != _locationKey) WidgetsBinding.instance.addPostFrameCallback((_) => _refresh());
     final reading = _reading;
     if (city == null || reading == null) return const SizedBox.shrink();
+    final temp = imperial ? (reading.temperature * 9 / 5 + 32).round() : reading.temperature;
+    final label = showLocation ? '$city $temp°' : '$temp°';
     return Padding(
       padding: const EdgeInsets.only(right: 16),
       child: Row(
@@ -143,7 +147,7 @@ class _WeatherWidgetState extends State<WeatherWidget> with WidgetsBindingObserv
           Icon(_icon(reading.code), color: Colors.white, size: 20),
           const SizedBox(width: 4),
           Text(
-            '$city ${reading.temperature}°',
+            label,
             style: const TextStyle(
               fontSize: 18,
               color: Colors.white,

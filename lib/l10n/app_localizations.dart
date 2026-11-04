@@ -1514,6 +1514,12 @@ abstract class AppLocalizations {
   /// **'10 PM - 6 AM'**
   String get brightnessSlotNight;
 
+  /// No description provided for @weather.
+  ///
+  /// In en, this message translates to:
+  /// **'Weather'**
+  String get weather;
+
   /// No description provided for @showWeather.
   ///
   /// In en, this message translates to:
@@ -1525,6 +1531,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Weather location'**
   String get weatherLocation;
+
+  /// No description provided for @showWeatherLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Show location'**
+  String get showWeatherLocation;
+
+  /// No description provided for @weatherUnits.
+  ///
+  /// In en, this message translates to:
+  /// **'Localization'**
+  String get weatherUnits;
+
+  /// No description provided for @weatherUnitsImperial.
+  ///
+  /// In en, this message translates to:
+  /// **'Imperial'**
+  String get weatherUnitsImperial;
+
+  /// No description provided for @weatherUnitsMetric.
+  ///
+  /// In en, this message translates to:
+  /// **'Metric'**
+  String get weatherUnitsMetric;
 
   /// No description provided for @weatherCityName.
   ///
