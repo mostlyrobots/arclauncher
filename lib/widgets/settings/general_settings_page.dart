@@ -16,10 +16,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import 'package:flauncher/providers/settings_service.dart';
 import 'package:flauncher/widgets/settings/settings_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flauncher/l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
 import 'focusable_settings_tile.dart';
 import 'brightness_settings_page.dart';
 import 'date_time_format_page.dart';
@@ -80,6 +82,19 @@ class GeneralSettingsPage extends StatelessWidget {
                   leading: const Icon(Icons.wifi),
                   title: Text(localizations.wifiUsagePeriod, style: Theme.of(context).textTheme.bodyMedium),
                   onPressed: () => Navigator.of(context).pushNamed(WifiUsagePeriodPage.routeName),
+                ),
+                Consumer<SettingsService>(
+                  builder: (context, settings, _) => FocusableSettingsTile(
+                    leading: const Icon(Icons.notifications_outlined),
+                    title: Text(localizations.allowNotifications, style: Theme.of(context).textTheme.bodyMedium),
+                    trailing: IgnorePointer(
+                      child: Switch(
+                        value: settings.allowNotifications,
+                        onChanged: (_) {},
+                      ),
+                    ),
+                    onPressed: () => settings.setAllowNotifications(!settings.allowNotifications),
+                  ),
                 ),
 
               ],

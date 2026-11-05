@@ -22,6 +22,7 @@ import 'package:flauncher/providers/reddit_slideshow.dart';
 import 'package:flauncher/providers/unsplash_slideshow.dart';
 import 'package:flauncher/widgets/settings/back_button_actions.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -38,6 +39,7 @@ const _showDateInStatusBar = "show_date_in_status_bar";
 const _showTimeInStatusBar = "show_time_in_status_bar";
 const _timeFormat = "time_format";
 const _wifiUsagePeriod = "wifi_usage_period";
+const _allowNotifications = "allow_notifications";
 const _showWifiWidgetInStatusBar = "show_wifi_widget_in_status_bar";
 const String _showNetworkIndicatorInStatusBar = "show_network_indicator_in_status_bar";
 const String _accentColor = "accent_color";
@@ -122,6 +124,8 @@ class SettingsService extends ChangeNotifier {
   String get timeFormat => _sharedPreferences.getString(_timeFormat) ?? defaultTimeFormat;
 
   String get wifiUsagePeriod => _sharedPreferences.getString(_wifiUsagePeriod) ?? WIFI_USAGE_DAILY;
+
+  bool get allowNotifications => _sharedPreferences.getBool(_allowNotifications) ?? true;
 
   bool get showWifiWidgetInStatusBar => _sharedPreferences.getBool(_showWifiWidgetInStatusBar) ?? false;
 
@@ -225,6 +229,13 @@ class SettingsService extends ChangeNotifier {
   Future<void> setWifiUsagePeriod(String period) async {
     await _sharedPreferences.setString(_wifiUsagePeriod, period);
     notifyListeners();
+  }
+
+  Future<void> setAllowNotifications(bool allow) async {
+    await set(_allowNotifications, allow);
+    try {
+      await const MethodChannel('me.efesser.flauncher/method').invokeMethod('setAllowNotifications', allow);
+    } catch (_) {}
   }
 
   Future<void> setShowWifiWidgetInStatusBar(bool show) async {

@@ -1709,6 +1709,20 @@ class MockSettingsService extends _i1.Mock implements _i18.SettingsService {
       ) as String);
 
   @override
+  bool get allowNotifications => (super.noSuchMethod(
+        Invocation.getter(#allowNotifications),
+        returnValue: true,
+        returnValueForMissingStub: true,
+      ) as bool);
+
+  @override
+  _i9.Future<void> setAllowNotifications(bool? allow) => (super.noSuchMethod(
+        Invocation.method(#setAllowNotifications, [allow]),
+        returnValue: _i9.Future<void>.value(),
+        returnValueForMissingStub: _i9.Future<void>.value(),
+      ) as _i9.Future<void>);
+
+  @override
   bool get showWifiWidgetInStatusBar => (super.noSuchMethod(
         Invocation.getter(#showWifiWidgetInStatusBar),
         returnValue: false,

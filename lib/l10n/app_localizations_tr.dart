@@ -418,6 +418,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get wifiUsagePeriod => 'Wi-Fi kullanım dönemi';
 
   @override
+  String get allowNotifications => 'Allow notifications';
+
+  @override
   String get showAppNamesBelowIcons => 'Simge altında uygulama adlarını göster';
 
   @override

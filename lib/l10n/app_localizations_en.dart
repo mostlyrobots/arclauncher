@@ -416,6 +416,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get wifiUsagePeriod => 'WiFi Usage Period';
 
   @override
+  String get allowNotifications => 'Allow notifications';
+
+  @override
   String get showAppNamesBelowIcons => 'Show App Names Below Icons';
 
   @override

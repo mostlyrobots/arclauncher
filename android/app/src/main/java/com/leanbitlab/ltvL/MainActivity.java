@@ -146,6 +146,10 @@ public class MainActivity extends FlutterActivity {
                     result.success(setSystemBrightness(brightness));
                 }
                 case "openWifiSettings" -> result.success(openWifiSettings());
+                case "setAllowNotifications" -> {
+                    NotificationOverlayService.sync(this);
+                    result.success(null);
+                }
                 case "getMediaStoreImages" -> result.success(getMediaStoreImages());
                 case "getMediaStoreVideos" -> result.success(getMediaStoreVideos());
                 case "getMediaStoreVideoThumbnail" -> {
@@ -198,6 +202,8 @@ public class MainActivity extends FlutterActivity {
 
         new EventChannel(messenger, NETWORK_EVENT_CHANNEL).setStreamHandler(
                 new NetworkEventStreamHandler(this));
+
+        NotificationOverlayService.sync(this);
     }
 
     private List<Map<String, Serializable>> getApplications() {
