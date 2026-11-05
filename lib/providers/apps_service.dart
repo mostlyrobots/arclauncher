@@ -43,6 +43,11 @@ class AppsService extends ChangeNotifier
   Map<String, App> _applications = Map();
   Map<String, Uint8List> _iconCache = Map();
   Map<String, Uint8List> _bannerCache = Map();
+  final Map<String, Future<Uint8List>> _iconFutures = {};
+  final Map<String, Future<Uint8List>> _bannerFutures = {};
+
+  Uint8List? getCachedBanner(String packageName) => _bannerCache[packageName];
+  Uint8List? getCachedIcon(String packageName) => _iconCache[packageName];
 
   Map<int, Category> _categoriesById = Map();
 
@@ -198,21 +203,38 @@ class AppsService extends ChangeNotifier
       notifyListeners();
     });
 
+    await _warmCategoryImages();
     _initialized = true;
     notifyListeners();
     
-    // Pre-cache icons for visible apps
+    // Pre-cache icons for remaining visible apps
     _preCacheIcons();
   }
 
+  Future<void> _warmAppImage(String packageName) async {
+    try {
+      final banner = await getAppBanner(packageName);
+      if (banner.isEmpty) {
+        await getAppIcon(packageName);
+      }
+    } catch (_) {}
+  }
+
+  Future<void> _warmCategoryImages() async {
+    final categoryPkgs = _categoriesById.values
+        .expand((c) => c.applications)
+        .map((a) => a.packageName)
+        .toSet()
+        .take(24);
+    if (categoryPkgs.isNotEmpty) {
+      await Future.wait(categoryPkgs.map(_warmAppImage));
+    }
+  }
+
   Future<void> _preCacheIcons() async {
-    // Only cache apps that are not hidden
     final visibleApps = _applications.values.where((app) => !app.hidden).toList();
     for (var app in visibleApps) {
-      // Don't await, let it run in background
-      getAppIcon(app.packageName);
-      // Also cache banner if it's likely to be needed soon
-      getAppBanner(app.packageName);
+      await _warmAppImage(app.packageName);
     }
   }
 
@@ -378,20 +400,29 @@ class AppsService extends ChangeNotifier
     );
   }
 
-  Future<Uint8List> getAppBanner(String packageName) async {
+  Future<Uint8List> getAppBanner(String packageName) {
     if (_bannerCache.containsKey(packageName)) {
-      return _bannerCache[packageName]!;
+      return Future.value(_bannerCache[packageName]!);
     }
+    return _bannerFutures.putIfAbsent(packageName, () async {
+      try {
+        final bytes = await _loadAppBanner(packageName);
+        _bannerCache[packageName] = bytes;
+        return bytes;
+      } finally {
+        _bannerFutures.remove(packageName);
+      }
+    });
+  }
 
+  Future<Uint8List> _loadAppBanner(String packageName) async {
     try {
       final prefs = await _prefsAsync;
       final customBannerPath = prefs.getString('custom_banner_$packageName');
       if (customBannerPath != null) {
         final file = File(customBannerPath);
         if (await file.exists()) {
-          final bytes = await file.readAsBytes();
-          _bannerCache[packageName] = bytes;
-          return bytes;
+          return await file.readAsBytes();
         }
       }
     } on FileSystemException {
@@ -402,11 +433,7 @@ class AppsService extends ChangeNotifier
       // Ignore other errors reading custom banner
     }
 
-    final bytes = await _fLauncherChannel.getApplicationBanner(packageName);
-    if (bytes.isNotEmpty) {
-      _bannerCache[packageName] = bytes;
-    }
-    return bytes;
+    return await _fLauncherChannel.getApplicationBanner(packageName);
   }
 
   Future<void> setCustomAppBanner(String packageName, String imagePath) async {
@@ -438,15 +465,21 @@ class AppsService extends ChangeNotifier
     return prefs.containsKey('custom_banner_$packageName');
   }
 
-  Future<Uint8List> getAppIcon(String packageName) async {
+  Future<Uint8List> getAppIcon(String packageName) {
     if (_iconCache.containsKey(packageName)) {
-      return _iconCache[packageName]!;
+      return Future.value(_iconCache[packageName]!);
     }
-    final bytes = await _fLauncherChannel.getApplicationIcon(packageName);
-    if (bytes.isNotEmpty) {
-      _iconCache[packageName] = bytes;
-    }
-    return bytes;
+    return _iconFutures.putIfAbsent(packageName, () async {
+      try {
+        final bytes = await _fLauncherChannel.getApplicationIcon(packageName);
+        if (bytes.isNotEmpty) {
+          _iconCache[packageName] = bytes;
+        }
+        return bytes;
+      } finally {
+        _iconFutures.remove(packageName);
+      }
+    });
   }
 
   Future<void> launchApp(App app) async {

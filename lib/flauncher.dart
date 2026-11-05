@@ -608,6 +608,16 @@ class _FLauncherState extends State<FLauncher> with WidgetsBindingObserver {
   Widget _wallpaper(BuildContext context, WallpaperService wallpaperService) {
     final screenSize = MediaQuery.sizeOf(context);
     final dpr = MediaQuery.devicePixelRatioOf(context);
+    final Widget staticWallpaper = wallpaperService.wallpaper != null
+        ? Image(
+            image: ResizeImage(wallpaperService.wallpaper!, height: (screenSize.height * dpr).round()),
+            key: ValueKey("background_${wallpaperService.wallpaperRevision}"),
+            fit: BoxFit.cover,
+            height: screenSize.height,
+            width: screenSize.width,
+          )
+        : _CachedGradientBackground(key: const Key("background"), gradient: wallpaperService.gradient.gradient);
+
     final videoFile = wallpaperService.wallpaperVideoFile;
     if (videoFile != null) {
       return SizedBox(
@@ -616,20 +626,11 @@ class _FLauncherState extends State<FLauncher> with WidgetsBindingObserver {
         child: WallpaperVideoBackground(
           key: ValueKey("background_video_${wallpaperService.wallpaperRevision}"),
           file: videoFile,
+          placeholder: staticWallpaper,
         ),
       );
     }
-    if (wallpaperService.wallpaper != null) {
-      return Image(
-        image: ResizeImage(wallpaperService.wallpaper!, height: (screenSize.height * dpr).round()),
-        key: ValueKey("background_${wallpaperService.wallpaperRevision}"),
-        fit: BoxFit.cover,
-        height: screenSize.height,
-        width: screenSize.width,
-      );
-    } else {
-      return _CachedGradientBackground(key: const Key("background"), gradient: wallpaperService.gradient.gradient);
-    }
+    return staticWallpaper;
   }
 
   Widget _emptyState(BuildContext context) {

@@ -293,14 +293,28 @@ class _AppCardState extends State<AppCard> with SingleTickerProviderStateMixin {
   }
 
   Future<void> _loadAppImage(AppsService service) async {
-    try {
-      Uint8List bytes = Uint8List(0);
+    final pkg = widget.application.packageName;
+    final cachedBanner = service.getCachedBanner(pkg);
+    if (cachedBanner != null && cachedBanner.isNotEmpty) {
+      _loadedImage = (AppImageType.Banner, ResizeImage(MemoryImage(cachedBanner), width: 480));
+      if (mounted) setState(() {});
+      return;
+    }
+    if (cachedBanner != null && cachedBanner.isEmpty) {
+      final cachedIcon = service.getCachedIcon(pkg);
+      if (cachedIcon != null && cachedIcon.isNotEmpty) {
+        _loadedImage = (AppImageType.Icon, ResizeImage(MemoryImage(cachedIcon), width: 480));
+        if (mounted) setState(() {});
+        return;
+      }
+    }
 
-      bytes = await service.getAppBanner(widget.application.packageName);
+    try {
+      Uint8List bytes = await service.getAppBanner(pkg);
       AppImageType type = AppImageType.Banner;
       if (bytes.isEmpty) {
         type = AppImageType.Icon;
-        bytes = await service.getAppIcon(widget.application.packageName);
+        bytes = await service.getAppIcon(pkg);
       }
       if (mounted) {
         setState(() {

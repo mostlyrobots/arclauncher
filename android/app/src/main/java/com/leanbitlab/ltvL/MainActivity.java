@@ -79,6 +79,7 @@ public class MainActivity extends FlutterActivity {
     private static final String PERMISSION_READ_TV_LISTINGS = "android.permission.READ_TV_LISTINGS";
     private static final int REQUEST_CODE_READ_TV_LISTINGS = 1001;
     private static final String COLUMN_ASPECT_RATIO = "aspect_ratio";
+    private final ExecutorService imageExecutor = Executors.newFixedThreadPool(4);
 
     @Override
     public void configureFlutterEngine(@NonNull FlutterEngine flutterEngine) {
@@ -89,8 +90,20 @@ public class MainActivity extends FlutterActivity {
         new MethodChannel(messenger, METHOD_CHANNEL).setMethodCallHandler((call, result) -> {
             switch (call.method) {
                 case "getApplications" -> result.success(getApplications());
-                case "getApplicationBanner" -> result.success(getApplicationBanner(call.arguments()));
-                case "getApplicationIcon" -> result.success(getApplicationIcon(call.arguments()));
+                case "getApplicationBanner" -> {
+                    String pkg = call.arguments();
+                    imageExecutor.execute(() -> {
+                        byte[] bytes = getApplicationBanner(pkg);
+                        runOnUiThread(() -> result.success(bytes));
+                    });
+                }
+                case "getApplicationIcon" -> {
+                    String pkg = call.arguments();
+                    imageExecutor.execute(() -> {
+                        byte[] bytes = getApplicationIcon(pkg);
+                        runOnUiThread(() -> result.success(bytes));
+                    });
+                }
                 case "applicationExists" -> result.success(applicationExists(call.arguments()));
                 case "launchActivityFromAction" -> result.success(launchActivityFromAction(call.arguments()));
                 case "launchApp" -> result.success(launchApp(call.arguments()));
@@ -306,10 +319,30 @@ public class MainActivity extends FlutterActivity {
         return map;
     }
 
+    private File getAppImageCacheFile(PackageManager pm, String prefix, String packageName) {
+        try {
+            long updateTime = pm.getPackageInfo(packageName, 0).lastUpdateTime;
+            File dir = new File(getCacheDir(), "app_images");
+            if (!dir.exists()) dir.mkdirs();
+            String safePkg = packageName.replaceAll("[^a-zA-Z0-9._-]", "_");
+            return new File(dir, prefix + "_" + safePkg + "_" + updateTime + ".bin");
+        } catch ( Exception ignored) {
+            return null;
+        }
+    }
+
     private byte[] getApplicationBanner(String packageName) {
         byte[] imageBytes = new byte[0];
 
         PackageManager packageManager = getPackageManager();
+        File cacheFile = getAppImageCacheFile(packageManager, "banner", packageName);
+        if (cacheFile != null && cacheFile.exists()) {
+            try {
+                return java.nio.file.Files.readAllBytes(cacheFile.toPath());
+            } catch (Exception ignored) {
+            }
+        }
+
         try {
             ApplicationInfo info = packageManager.getApplicationInfo(packageName, 0);
             // Many TV apps (e.g. Free TV, S0undTV) declare android:banner on their leanback activity
@@ -323,6 +356,12 @@ public class MainActivity extends FlutterActivity {
             if (drawable != null) {
                 imageBytes = drawableToByteArray(drawable);
             }
+            if (cacheFile != null) {
+                try {
+                    java.nio.file.Files.write(cacheFile.toPath(), imageBytes);
+                } catch (Exception ignored) {
+                }
+            }
         } catch (PackageManager.NameNotFoundException ignored) {
         }
 
@@ -333,12 +372,26 @@ public class MainActivity extends FlutterActivity {
         byte[] imageBytes = new byte[0];
 
         PackageManager packageManager = getPackageManager();
+        File cacheFile = getAppImageCacheFile(packageManager, "icon", packageName);
+        if (cacheFile != null && cacheFile.exists()) {
+            try {
+                return java.nio.file.Files.readAllBytes(cacheFile.toPath());
+            } catch (Exception ignored) {
+            }
+        }
+
         try {
             ApplicationInfo info = packageManager.getApplicationInfo(packageName, 0);
             Drawable drawable = info.loadIcon(packageManager);
 
             if (drawable != null) {
                 imageBytes = drawableToByteArray(drawable);
+            }
+            if (cacheFile != null) {
+                try {
+                    java.nio.file.Files.write(cacheFile.toPath(), imageBytes);
+                } catch (Exception ignored) {
+                }
             }
         } catch (PackageManager.NameNotFoundException ignored) {
         }
@@ -531,6 +584,10 @@ public class MainActivity extends FlutterActivity {
             bitmap = bitmapDrawable.getBitmap();
         } else {
             bitmap = drawableToBitmap(drawable);
+        }
+        if (bitmap.getWidth() > 480) {
+            int targetHeight = Math.max(1, Math.round(bitmap.getHeight() * (480f / bitmap.getWidth())));
+            bitmap = Bitmap.createScaledBitmap(bitmap, 480, targetHeight, true);
         }
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);

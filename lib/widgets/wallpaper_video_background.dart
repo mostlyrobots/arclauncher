@@ -25,9 +25,11 @@ class WallpaperVideoBackground extends StatefulWidget {
   const WallpaperVideoBackground({
     super.key,
     required this.file,
+    this.placeholder,
   });
 
   final File file;
+  final Widget? placeholder;
 
   @override
   State<WallpaperVideoBackground> createState() =>
@@ -104,7 +106,7 @@ class _WallpaperVideoBackgroundState extends State<WallpaperVideoBackground>
   Widget build(BuildContext context) {
     final controller = _controller;
     if (controller == null || !controller.value.isInitialized) {
-      return const ColoredBox(color: Colors.black);
+      return widget.placeholder ?? const ColoredBox(color: Colors.black);
     }
 
     final size = controller.value.size;
