@@ -278,8 +278,6 @@ class WallpaperService extends ChangeNotifier {
       newWallpaper = FileImage(redditFile);
     } else if (_settingsService.unsplashSlideshowEnabled && slideshowFile != null && slideshowFile.existsSync()) {
       newWallpaper = FileImage(slideshowFile);
-    } else if (videoFile != null) {
-      newWallpaper = null;
     } else if (enabled) {
       if (isDay && _wallpaperDayFile.existsSync()) {
         newWallpaper = FileImage(_wallpaperDayFile);
