@@ -91,14 +91,22 @@ class _WallpaperVideoBackgroundState extends State<WallpaperVideoBackground>
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    final controller = _controller;
-    if (controller == null || !controller.value.isInitialized) return;
-
     if (state == AppLifecycleState.resumed) {
-      controller.play();
-    } else if (state == AppLifecycleState.paused ||
-        state == AppLifecycleState.inactive) {
-      controller.pause();
+      if (_controller == null) {
+        _initController();
+      } else if (_controller!.value.isInitialized) {
+        _controller!.play();
+      }
+    } else if (state == AppLifecycleState.paused) {
+      if (_controller != null) {
+        _disposeController();
+        if (mounted) setState(() {});
+      }
+    } else if (state == AppLifecycleState.inactive) {
+      final controller = _controller;
+      if (controller != null && controller.value.isInitialized) {
+        controller.pause();
+      }
     }
   }
 
