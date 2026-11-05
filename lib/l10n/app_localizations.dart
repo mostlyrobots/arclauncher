@@ -866,6 +866,12 @@ abstract class AppLocalizations {
   /// **'WiFi Usage Period'**
   String get wifiUsagePeriod;
 
+  /// No description provided for @allowNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow notifications'**
+  String get allowNotifications;
+
   /// No description provided for @showAppNamesBelowIcons.
   ///
   /// In en, this message translates to:

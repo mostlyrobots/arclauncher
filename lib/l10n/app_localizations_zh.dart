@@ -411,6 +411,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get wifiUsagePeriod => 'WiFi 使用周期';
 
   @override
+  String get allowNotifications => 'Allow notifications';
+
+  @override
   String get showAppNamesBelowIcons => '在图标下方显示应用名称';
 
   @override

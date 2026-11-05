@@ -418,6 +418,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get wifiUsagePeriod => 'Chu kỳ thống kê Wi-Fi';
 
   @override
+  String get allowNotifications => 'Allow notifications';
+
+  @override
   String get showAppNamesBelowIcons => 'Hiện tên ứng dụng dưới biểu tượng';
 
   @override

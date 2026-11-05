@@ -197,6 +197,7 @@
     "screensaverSettings": "Screensaver Settings",
     "screensaverClockStyle": "Screensaver Clock Style",
     "wifiUsagePeriod": "WiFi Usage Period",
+    "allowNotifications": "Allow notifications",
     "showAppNamesBelowIcons": "Show App Names Below Icons",
     "wifiUsage": "WiFi Usage",
     "networkIndicator": "Network Indicator",
